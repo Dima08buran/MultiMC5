@@ -1,5 +1,5 @@
-#include "MMCJson.h"
-using namespace MMCJson;
+#include "Json.h"
+using namespace Json;
 
 #include "RawLibrary.h"
 
@@ -71,7 +71,7 @@ RawLibraryPtr RawLibrary::fromJsonPlus(const QJsonObject &libObj, const QString 
 	auto lib = RawLibrary::fromJson(libObj, filename);
 	if (libObj.contains("insert"))
 	{
-		QJsonValue insertVal = ensureExists(libObj.value("insert"), "library insert rule");
+		QJsonValue insertVal = ensureJsonValue(libObj.value("insert"), "library insert rule");
 		if (insertVal.isString())
 		{
 			// it's just a simple string rule. OK.
@@ -109,7 +109,7 @@ RawLibraryPtr RawLibrary::fromJsonPlus(const QJsonObject &libObj, const QString 
 				throw JSONValidationError("Empty compound insert rule in " + filename);
 			}
 			QString insertString = insertObj.keys().first();
-			// really, only replace makes sense in combination with 
+			// really, only replace makes sense in combination with
 			if(insertString != "replace")
 			{
 				throw JSONValidationError("Compound insert rule is not 'replace' in " + filename);
